@@ -97,7 +97,7 @@ echo !COMANDOCOMPLETO!
 echo.
 
 :PERGUNTAEXECUTAR
-set /p OPCAO=Deseja executar o comando (S) Sim ou (N) Não? 
+set /p OPCAO=Deseja que este script execute o comando? (S) Sim / (N) Nao : 
 if /I "!OPCAO!"=="S" goto EXECUTA
 if /I "!OPCAO!"=="N" goto FIM
 goto PERGUNTAEXECUTAR
