@@ -1,0 +1,2 @@
+MeuProjeto=C:\workspace\MeuProjeto
+OutroProjeto=C:\workspace\OutroProjeto
