@@ -1,5 +1,5 @@
 @echo off
-setlocal enabledelayedexpansion
+setlocal EnableDelayedExpansion
 
 set ATUAL=dados\projeto-atual.tmp
 
@@ -9,8 +9,8 @@ if not exist "%ATUAL%" (
     exit /b 1
 )
 
-REM lê nome e caminho
-for /f "tokens=1,2 delims=|" %%a in (%ATUAL%) do (
+REM lê nome e caminho do projeto
+for /f "tokens=1,2 delims=|" %%a in ("%ATUAL%") do (
     set NOME=%%a
     set CAMINHO=%%b
 )
@@ -27,36 +27,25 @@ if not exist "%CAMINHO%" (
     exit /b 2
 )
 
-if not exist "%CAMINHO%\pom.xml" (
+set POM=%CAMINHO%\pom.xml
+
+if not exist "%POM%" (
     echo ERRO: pom.xml nao encontrado.
     exit /b 3
 )
 
-set IN_PARENT=0
-set VERSION=
+set VERSAO=
 
-for /f "usebackq delims=" %%l in ("%CAMINHO%\pom.xml") do (
-
-    set linha=%%l
-
-    echo !linha! | find "<parent>" >nul && set IN_PARENT=1
-    echo !linha! | find "</parent>" >nul && set IN_PARENT=0
-
-    if !IN_PARENT! == 0 (
-        echo !linha! | find "<version>" >nul
-        if !errorlevel! == 0 (
-            for /f "tokens=2 delims=<>" %%v in ("!linha!") do (
-                if not defined VERSION set VERSION=%%v
-            )
-        )
-    )
+for /f "delims=" %%V in ('powershell -NoProfile -Command ^
+    "[xml]$xml = Get-Content '!POM!'; $xml.project.version"') do (
+    set VERSAO=%%V
 )
 
-if not defined VERSION (
-    echo ERRO: versao nao encontrada no pom.xml
+if not defined VERSAO (
+    echo ERRO: nao foi possivel identificar a versao.
     exit /b 4
 )
 
-echo Versao do projeto: !VERSION!
+echo Versao do projeto: !VERSAO!
 
 exit /b 0
