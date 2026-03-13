@@ -9,6 +9,27 @@ if not exist "%ATUAL%" (
     exit /b 1
 )
 
+:MENU
+cls
+echo ============================
+echo GITFLOW
+echo ============================
+echo.
+
+echo 1 - Consultar versao
+echo 0 - Voltar
+echo.
+
+set /p op=Escolha: 
+
+if "%op%"=="1" goto CONSULTA_VERSAO
+if "%op%"=="0" exit /b 0
+
+
+
+
+:CONSULTA_VERSAO
+
 REM lê nome e caminho do projeto
 for /f "tokens=1,2 delims=|" %%a in (%ATUAL%) do (
     set NOME=%%a
@@ -47,5 +68,5 @@ if not defined VERSAO (
 )
 
 echo Versao do projeto: !VERSAO!
-
-exit /b 0
+pause
+goto MENU
