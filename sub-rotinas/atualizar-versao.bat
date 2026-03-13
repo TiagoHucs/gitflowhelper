@@ -55,7 +55,7 @@ echo O comando par atualizacao do projeto é : %COMANDO%
 set /p RESP=deseja que eu execute? (s/n) 
 
 if "%RESP%"=="s" (
-    %COMANDO%
+    %CAMINHO%\%COMANDO%
 )
 
 pause
