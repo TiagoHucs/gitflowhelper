@@ -1,2 +1,3 @@
-projetos.conf
-projeto-atual.tmp
+/target/
+/.idea/
+/data/

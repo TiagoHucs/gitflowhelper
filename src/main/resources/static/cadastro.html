@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Projetos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h2>Cadastrar Projeto</h2>
+<input id="nome" placeholder="Nome"><br><br>
+<input id="diretorio" placeholder="Diretório"><br><br>
+<button onclick="salvar()">Salvar</button>
+<button onclick="voltar()">Voltar</button>
+
+<script>
+function salvar() {
+    fetch("/projetos", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            nome: document.getElementById("nome").value,
+            diretorio: document.getElementById("diretorio").value
+        })
+    }).then(() => { alert("Salvo!"); voltar();});
+}
+
+function voltar() {
+   window.location.href = "lista.html";
+}
+</script>
+</body>
+</html>

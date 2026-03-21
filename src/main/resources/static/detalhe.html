@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Projetos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Detalhe do Projeto</h2>
+
+<p><strong>Nome:</strong> <span id="nome"></span></p>
+<p><strong>Diretório:</strong> <span id="diretorio"></span></p>
+<p><strong>Versão:</strong> <span id="versao"></span></p>
+<p><strong>Branch atual:</strong> <span id="branch"></span></p>
+
+<button onclick="voltar()">Voltar</button>
+
+<script>
+    function getId() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("id");
+    }
+
+    function carregar() {
+        const id = getId();
+
+        fetch("/projetos/" + id)
+            .then(res => res.json())
+            .then(p => {
+                document.getElementById("nome").innerText = p.nome;
+                document.getElementById("diretorio").innerText = p.diretorio;
+                document.getElementById("versao").innerText = p.versao;
+                document.getElementById("branch").innerText = p.branch;
+            });
+    }
+
+    function voltar() {
+        window.location.href = "lista.html";
+    }
+
+    carregar();
+</script>
+
+</body>
+</html>
