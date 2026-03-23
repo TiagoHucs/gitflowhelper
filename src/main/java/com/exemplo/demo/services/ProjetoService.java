@@ -4,15 +4,15 @@ import com.exemplo.demo.model.Projeto;
 import com.exemplo.demo.model.ProjetoDTO;
 import com.exemplo.demo.repository.ProjetoRepository;
 import com.exemplo.demo.util.Utils;
-import jdk.jshell.execution.Util;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
 @Service
 public class ProjetoService {
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ProjetoService.class);
 
     @Autowired
     private ProjetoRepository repository;
@@ -43,6 +43,11 @@ public class ProjetoService {
         repository.deleteById(id);
     }
 
-
-
+    public ProjetoDTO gitflow(Long id) {
+        ProjetoDTO  p = detalhar(id);
+        log.info(String.format("Iniciando gitflow para projeto: %s versao: %s ", p.nome,p.versao));
+        gitService.setBranch(p.diretorio,"develop");
+        gitService.update(p.diretorio);
+        return detalhar(id);
+    }
 }

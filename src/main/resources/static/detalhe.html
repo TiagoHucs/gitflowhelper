@@ -15,6 +15,7 @@
 <p><strong>Branch atual:</strong> <span id="branch"></span></p>
 
 <button onclick="voltar()">Voltar</button>
+<button onclick="gitflow()">Iniciar GitFlow</button>
 
 <script>
     function getId() {
@@ -32,6 +33,20 @@
                 document.getElementById("diretorio").innerText = p.diretorio;
                 document.getElementById("versao").innerText = p.versao;
                 document.getElementById("branch").innerText = p.branch;
+            });
+    }
+
+    function gitflow(){
+        const id = getId();
+
+        fetch("/projetos/gitflow/" + id)
+            .then(res => res.json())
+            .then(p => {
+                document.getElementById("nome").innerText = p.nome;
+                document.getElementById("diretorio").innerText = p.diretorio;
+                document.getElementById("versao").innerText = p.versao;
+                document.getElementById("branch").innerText = p.branch;
+                alert('Dados atualizados!');
             });
     }
 

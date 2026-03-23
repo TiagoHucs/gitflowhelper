@@ -1,31 +1,33 @@
 package com.exemplo.demo.services;
 
+import com.exemplo.demo.model.CommandResult;
 import com.exemplo.demo.model.Projeto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 @Service
 public class GitService {
 
+    @Autowired
+    private CommandService commandService;
+
     public String getBranch(Projeto proj) {
         try {
-            ProcessBuilder pb = new ProcessBuilder("git", "branch", "--show-current");
-            pb.directory(new java.io.File(proj.getDiretorio()));
-
-            Process process = pb.start();
-
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream())
+            CommandResult result = commandService.executeCommand(
+                    proj.getDiretorio(),
+                    "git", "branch", "--show-current"
             );
 
-            String branch = reader.readLine();
+            if (result.isSuccess()) {
+                String branch = result.getOutput();
 
-            process.waitFor();
-
-            if (branch != null && !branch.isBlank()) {
-                return branch;
+                if (branch != null && !branch.isBlank()) {
+                    return branch.trim();
+                } else {
+                    return "DETACHED";
+                }
+            } else {
+                System.out.println("Erro ao obter branch: " + result.getError());
             }
 
         } catch (Exception e) {
@@ -36,4 +38,13 @@ public class GitService {
     }
 
 
+    public CommandResult setBranch(String path, String branch) {
+        return commandService.executeCommand(
+                path,"git", "checkout", branch
+        );
+    }
+
+    public CommandResult update(String diretorio) {
+        return commandService.executeCommand(diretorio,"git", "update");
+    }
 }

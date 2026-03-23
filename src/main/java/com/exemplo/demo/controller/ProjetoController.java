@@ -38,4 +38,9 @@ public class ProjetoController {
     public void deletar(@PathVariable Long id) {
         service.delete(id);
     }
+
+    @GetMapping("/gitflow/{id}")
+    public ProjetoDTO gitflow(@PathVariable Long id) {
+        return service.gitflow(id);
+    }
 }
